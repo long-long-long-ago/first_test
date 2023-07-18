@@ -28,7 +28,7 @@ def startPlay(driver):
     pass
 
 def readQues():
-    with open('ques.txt', 'r' ,encoding='utf-8') as file:
+    with open('ques.json', 'r' ,encoding='utf-8') as file:
         quesStr = file.read()
         quesrtion_dir = json.loads(quesStr)
         print(quesrtion_dir)
@@ -75,7 +75,7 @@ def startExam(driver):
 
 
 def saveAnswer(quesrtion_dir):
-    with open('ques.txt', 'w' ,encoding='utf-8') as file:
+    with open('ques.json', 'w',encoding='utf-8') as file:
         file.write(json.dumps(quesrtion_dir,ensure_ascii=False,indent=2))
     pass
 
