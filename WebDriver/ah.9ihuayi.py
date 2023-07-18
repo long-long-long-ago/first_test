@@ -3,6 +3,8 @@ import re
 import traceback
 from io import BytesIO
 from PIL import Image
+
+from WebDriver import Properties
 from WebDriver.Course import Course
 from selenium import webdriver
 from selenium.common import NoSuchElementException
@@ -20,32 +22,12 @@ now_url= "https://ah.91huayi.com"
 # class_5_url = "https://ah.91huayi.com/train/courseware/list?cid=A14A6EB7-EFE3-43F3-99FC-DA4BC2B1A2D5&mid=7876BF64-EFE0-E811-A088-005056A62382"
 
 
-class_1_url = "https://ah.91huayi.com/train/courseware/list?cid=A7B61926-086E-4A76-AE46-88C7C03FEB34&mid=7876BF64-EFE0-E811-A088-005056A62382"
+class_1_url = "https://ah.91huayi.com/train/courseware/list?cid=E3352E80-B575-4E64-8B67-2468A3221821&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_2_url = "https://ah.91huayi.com/train/courseware/list?cid=9B604FD7-3841-4584-989F-568E5D972C84&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_3_url = "https://ah.91huayi.com/train/courseware/list?cid=8DC68B06-2DB7-4262-AABB-C96A40633D40C&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_4_url = "https://ah.91huayi.com/train/courseware/list?cid=AA19A88E-CE8B-4D88-AC5C-7CD07D7D72E5&mid=7876BF64-EFE0-E811-A088-005056A62382"
 chromedriver_url = "C:/Users/Administrator/AppData/Local/Google/Chrome/Application/chromedriver"
-# 王虎
-# user_name = "240572AMR"
-# 韩秋玲
-# user_name = "240572AAI"
-# user_pwd = "000000"
-# 汪传德
-# user_name = "240572ALD"
-# user_pwd = "wcd123456"
-# 朱乐军
-# user_name = "240572AJ9"
-# user_name = "24057PAAV" #胡小凤
-# user_name = "240572AAH"
-# user_pwd = "yxj123456"
-# user_name = "240572AHQ"#黄曙光
-# user_name = "240572AMD" #朱玲莉
-# user_name = "240571AJ4"#王荣
-# user_name = "240572ALV"#叶书洋
-# user_name = "240572AJ7"#刘辉
-# user_pwd = "lh123456"
-user_name = "240571AJ4"#王荣
-user_pwd = "000000"
+
 # 定义选项字典，默认null
 quesrtion_dir = {}
 # 保存验证码
@@ -107,7 +89,7 @@ def swithExamCoursePage(driver):
     for shiti in shitis:
         time.sleep(1)
         # 获取问题内容
-        quesrtion_text = shiti.find_element(By.TAG_NAME,"p").text[2:].replace(" ", "")
+        quesrtion_text = shiti.find_element(By.TAG_NAME,"p").text[2:].replace(" ", "").replace("<","")
         # daan = quesrtion_dirs.get(quesrtion_text)
         print(quesrtion_text)
         if quesrtion_dir.get(quesrtion_text) is None :
@@ -154,8 +136,8 @@ def swithChangeAnser(driver):
         dds = left.find_elements(By.XPATH,".//ul/li")
         print("============错误题===========")
         for dd in dds:
-            print(dd.text[2:].replace(" ", ""))
-            quesrtion_dir[dd.text[2:].replace(" ", "")] = quesrtion_dir.get(dd.text[2:].replace(" ", ""))+1
+            print(str(dd.text[2:]).replace(" ", "").replace("&lt;",""))
+            quesrtion_dir[dd.text[2:].replace(" ", "").replace("&lt;","")] = quesrtion_dir.get(dd.text[2:].replace(" ", "").replace("&lt;",""))+1
         # 重新考试
         time.sleep(10)
         print("==========================")
@@ -176,8 +158,8 @@ def swithChangeAnser(driver):
         pass
 
 def saveAnswer(quesrtion_dir):
-    with open('ques.json', 'w' ,encoding='utf-8') as file:
-        file.write(json.dumps(quesrtion_dir,indent=2))
+    with open('ques.json', 'w', encoding='utf-8') as file:
+        file.write(json.dumps(quesrtion_dir, ensure_ascii=False, indent=2))
     pass
 
 
@@ -213,9 +195,9 @@ def startwebdriver():
     # 最大化浏览器
     driver.maximize_window()
     loginNameElement = driver.find_element(By.NAME, "user_name")
-    loginNameElement.send_keys(user_name)
+    loginNameElement.send_keys(Properties.user_name)
     loginPwdElement = driver.find_element(By.NAME, "password")
-    loginPwdElement.send_keys(user_pwd)
+    loginPwdElement.send_keys(Properties.user_pwd)
     # 识别验证码
     yzmImgElement = driver.find_element(By.NAME, "codeimg")
     src= yzmImgElement.get_attribute("src")
@@ -236,11 +218,11 @@ def startwebdriver():
     # ----------------------------------
     # 进入课程列表页面
     # 播放第一个视频
-    # switchToCoursePage(driver,class_1_url)
+    switchToCoursePage(driver,class_1_url)
     # switchToCoursePage(driver, class_2_url)
-    switchToCoursePage(driver, class_3_url)
+    # switchToCoursePage(driver, class_3_url)
     # 播放第四个视频
-    switchToCoursePage(driver, class_4_url)
+    # switchToCoursePage(driver, class_4_url)
     # ----------------------------------
     time.sleep(30)
     print("程序关闭")
