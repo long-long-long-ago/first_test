@@ -8,7 +8,7 @@ import json
 
 now_url= "https://www.zjzx.ah.cn/"
 # chromedriver下载地址：http://chromedriver.storage.googleapis.com/index.html
-chromedriver_url = "C:/Users/Administrator/AppData/Local/Google/Chrome/Application/chromedriver"
+chromedriver_url = "../chromedriver"
 user_name = "342224199803061767"
 user_pwd = "Zhulingli0721"
 
@@ -28,7 +28,7 @@ def startPlay(driver):
     pass
 
 def readQues():
-    with open('ques.json', 'r' ,encoding='utf-8') as file:
+    with open('ques.txt', 'r' ,encoding='utf-8') as file:
         quesStr = file.read()
         quesrtion_dir = json.loads(quesStr)
         print(quesrtion_dir)
@@ -68,14 +68,15 @@ def startExam(driver):
         if nextQue.is_displayed():
             nextQue.click()
         else:
+            time.sleep(1)
             submit(quesrtion_dir)
             break
     pass
 
 
 def saveAnswer(quesrtion_dir):
-    with open('ques.json', 'w' ,encoding='utf-8') as file:
-        file.write(json.dumps(quesrtion_dir,indent=2))
+    with open('ques.txt', 'w' ,encoding='utf-8') as file:
+        file.write(json.dumps(quesrtion_dir,ensure_ascii=False,indent=2))
     pass
 
 
@@ -89,7 +90,7 @@ def checkAnswer(driver,quesrtion_dir):
         for que in quesDetails.find_elements(By.CLASS_NAME,"ap-paper-ques-abc"):
             if answerTextCode.find(que.text[0]) != -1:
                 answertext = answertext + que.text[2:]
-        quesrtion_dir[quesText] = answertext
+        quesrtion_dir[quesText] = answertext.replace("\n","")
         if nextQue.is_displayed():
             nextQue.click()
         else:
@@ -108,7 +109,7 @@ def startAnswer(driver,quesrtion_dir):
         ques[0].click()
         answer= "aaa"
     for que in ques:
-        if answer.find(que.text[2:]) != -1:
+        if answer.find(que.text[2:].replace("\n","")) != -1:
             que.click()
 
 def getAnswer(quesrtion_dir,que):
