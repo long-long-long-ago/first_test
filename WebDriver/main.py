@@ -9,10 +9,10 @@ import os
 import re
 from io import BytesIO
 from PIL import Image
+
+from WebDriver import Properties
 from WebDriver.Course import Course
 import json
-
-
 
 now_url = "https://cme23.91huayi.com/pages/course.aspx?cid=6a4543e4-cd7d-4c25-877a-598f46598034&dept_id=8834a9b2-6e44-49ea-acf7-9b8a00f2802b"
 
@@ -36,12 +36,13 @@ chromedriver_url = "C:/Users/Administrator/AppData/Local/Google/Chrome/Applicati
 # user_pwd = "000000"
 # user_name = "240572AJ7"#刘辉
 # user_pwd = "lh123456"
-user_name = "240571AJ4"#王荣
-user_pwd = "000000"
+user_name = Properties.username
+user_pwd =  Properties.user_pwd
 quesrtion_dir = {}
 
+
 def runJs(driver):
-    time.sleep(10*60)
+    time.sleep(10 * 60)
     js = "showExam(true);"
     driver.execute_script(js)
 
@@ -59,7 +60,7 @@ def startwebdriver():
     loginPwdElement.send_keys(user_pwd)
     # 识别验证码
     yzmImgElement = driver.find_element(By.ID, "imgCheckCode")
-    src= yzmImgElement.get_attribute("src")
+    src = yzmImgElement.get_attribute("src")
     print(src)
     time.sleep(1)
     saveYzm(driver)
@@ -82,6 +83,7 @@ def startwebdriver():
     print("程序关闭")
     driver.close()
 
+
 #
 # def insertMsg(question, answer):
 #     cursor = db.cursor()
@@ -96,7 +98,7 @@ def startwebdriver():
 
 
 def response_interceptor(request, response):
-    t=response.headers['Content-Type']
+    t = response.headers['Content-Type']
     print("------------")
     if 'image/Gif' in t:
         print(request.url)
@@ -118,33 +120,33 @@ def saveYzm(driver):
     img.save('xx.png')
 
 
-#启动webdriver
+# 启动webdriver
 def switchToCoursePage(driver):
     for win in driver.window_handles:
         driver.switch_to.window(win)
         # print(driver.)
-        course = driver.find_elements(By.CLASS_NAME,"f14blue")
+        course = driver.find_elements(By.CLASS_NAME, "f14blue")
         print(len(course))
-        current_courses =[]
-        is_played = False #判断当前课程是否已经学过了
+        current_courses = []
+        is_played = False  # 判断当前课程是否已经学过了
         # 便利课程列表，选择播放哪一个课程
         for i in range(1, len(course)):
             # print(course[i].text+":"+course[i].get_attribute("href"))
-            if course[i].text != "" :
-                if(not is_played):
+            if course[i].text != "":
+                if (not is_played):
                     # 获取课程链接
-                    current_course = Course(course[i].text,course[i].get_attribute("href"))
-                    print(current_course.name+":"+current_course.href)
+                    current_course = Course(course[i].text, course[i].get_attribute("href"))
+                    print(current_course.name + ":" + current_course.href)
                     current_courses.append(current_course)
             else:
                 # print(course[i].find_element(By.TAG_NAME,"img").get_attribute("src").endswith("anniu_03a.gif"))
-                if(course[i].find_element(By.TAG_NAME,"img").get_attribute("src").endswith("anniu_03a.gif")):
+                if (course[i].find_element(By.TAG_NAME, "img").get_attribute("src").endswith("anniu_03a.gif")):
                     # 已经学习过了，不再学习
                     is_played = True
                 else:
                     is_played = False
 
-        if len(current_courses) > 0 :
+        if len(current_courses) > 0:
             for c in current_courses:
                 # 跳转到播放页面
                 driver.get(c.href)
@@ -178,28 +180,27 @@ def swithExamCoursePage(driver):
             answer_labels[0].click()
         elif quesrtion_dir.get(quesrtion_text.text[2:].replace(" ", "")) == 2:
             # 选择答案   B
-             answer_labels[1].click()
+            answer_labels[1].click()
         elif quesrtion_dir.get(quesrtion_text.text[2:].replace(" ", "")) == 3:
             # 选择答案   C
-             answer_labels[2].click()
+            answer_labels[2].click()
         elif quesrtion_dir.get(quesrtion_text.text[2:].replace(" ", "")) == 4:
             # 选择答案   D
-             answer_labels[3].click()
+            answer_labels[3].click()
         elif quesrtion_dir.get(quesrtion_text.text[2:].replace(" ", "")) == 5:
             # 选择答案  E
-             answer_labels[4].click()
+            answer_labels[4].click()
         else:
             # 选择答案  A
             answer_labels[1].click()
 
-    submit = driver.find_element(By.ID,"btn_submit")
+    submit = driver.find_element(By.ID, "btn_submit")
     time.sleep(5)
     submit.click()
     swithChangeAnser(driver)
 
-
-        # questions =
-        # break
+    # questions =
+    # break
 
 
 def swithChangeAnser(driver):
@@ -213,8 +214,10 @@ def swithChangeAnser(driver):
         for dd in dds:
             print(dd.get_attribute("title").replace(" ", ""))
             print(str(quesrtion_dir).replace(" ", ""))
-            print(dd.get_attribute("title").replace(" ", "") + ":" + str(quesrtion_dir.get(dd.get_attribute("title").replace(" ", ""))))
-            quesrtion_dir[dd.get_attribute("title").replace(" ", "")] = quesrtion_dir.get(dd.get_attribute("title").replace(" ", ""))+1
+            print(dd.get_attribute("title").replace(" ", "") + ":" + str(
+                quesrtion_dir.get(dd.get_attribute("title").replace(" ", ""))))
+            quesrtion_dir[dd.get_attribute("title").replace(" ", "")] = quesrtion_dir.get(
+                dd.get_attribute("title").replace(" ", "")) + 1
         # 重新考试
         time.sleep(5)
         print("==========================")
@@ -229,17 +232,22 @@ def swithChangeAnser(driver):
         print(str(quesrtion_dir))
         pass
 
+
 def saveAnswer(quesrtion_dir):
-    with open('ques.json', 'w' ,encoding='utf-8') as file:
-        file.write(json.dumps(quesrtion_dir,indent=2))
+    with open('ques.json', 'w', encoding='utf-8') as file:
+        file.write(json.dumps(quesrtion_dir, indent=2))
     pass
+
+
 def runJs1(driver):
     js = "let video = document.querySelector('video');  video.currentTime = video.duration; closeBangZhu();"
     driver.execute_script(js)
     pass
 
-def runJS(driver,js_str):
+
+def runJS(driver, js_str):
     driver.execute_script(js_str)
+
 
 def swithPalyCoursePage(driver):
     buttonClass = "pv-playpause"
@@ -248,8 +256,8 @@ def swithPalyCoursePage(driver):
         time.sleep(5)
         try:
             print("=====pv-playpause======")
-            controls = driver.find_element(By.CLASS_NAME,"pv-controls-left")
-            button = controls.find_element(By.XPATH,".//button")
+            controls = driver.find_element(By.CLASS_NAME, "pv-controls-left")
+            button = controls.find_element(By.XPATH, ".//button")
             print("开始播放")
             button.click()
         except NoSuchElementException as e:
@@ -268,7 +276,7 @@ def swithPalyCoursePage(driver):
             time.sleep(10)
             runJs1(driver)
             jrksHref = jrksElemente.get_attribute("href")
-            runJS(driver,"closeBangZhu()")
+            runJS(driver, "closeBangZhu()")
         print(jrksHref[-1])
         # div_processbar_tip 无法跳跃提示框
 
@@ -295,7 +303,7 @@ def gif_to_png():
     # im.save('test2.png', transparency=transparency)
 
 
-#识别数字验证码
+# 识别数字验证码
 def shibieyanzhengma():
     ocr = ddddocr.DdddOcr()
     with open('../WebDriver/xx.png', 'rb') as f:
@@ -304,14 +312,14 @@ def shibieyanzhengma():
     print(yzm)
     return yzm
 
+
 def readQues():
-    with open('ques.json', 'r' ,encoding='utf-8') as file:
+    with open('ques.json', 'r', encoding='utf-8') as file:
         quesStr = file.read()
         quesrtion_dir = json.loads(quesStr)
         print(quesrtion_dir)
         print(type(quesrtion_dir))
         return quesrtion_dir
-
 
 
 if __name__ == '__main__':
