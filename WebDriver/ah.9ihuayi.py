@@ -5,7 +5,6 @@ from io import BytesIO
 from PIL import Image
 
 from WebDriver import Properties
-from WebDriver.Course import Course
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
