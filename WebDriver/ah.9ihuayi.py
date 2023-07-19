@@ -15,11 +15,6 @@ import base64
 import json
 
 now_url= "https://ah.91huayi.com"
-# class_1_url = "https://ah.91huayi.com/train/courseware/list?cid=998FFB9E-49F9-4282-A67D-E4F1EB1C2A99&mid=7876BF64-EFE0-E811-A088-005056A62382"
-# class_2_url = "https://ah.91huayi.com/train/courseware/list?cid=EF9E793D-44AA-4897-8987-70A46491BC75&mid=7876BF64-EFE0-E811-A088-005056A62382"
-# class_3_url = "https://ah.91huayi.com/train/courseware/list?cid=10FA0CE8-77AC-4498-A65D-250BA10D13B2&mid=7876BF64-EFE0-E811-A088-005056A62382"
-# class_4_url = "https://ah.91huayi.com/train/courseware/list?cid=43E50E01-2C5B-42FE-A42C-BDFF44EABC33&mid=7876BF64-EFE0-E811-A088-005056A62382"
-# class_5_url = "https://ah.91huayi.com/train/courseware/list?cid=A14A6EB7-EFE3-43F3-99FC-DA4BC2B1A2D5&mid=7876BF64-EFE0-E811-A088-005056A62382"
 
 
 class_1_url = "https://ah.91huayi.com/train/courseware/list?cid=E3352E80-B575-4E64-8B67-2468A3221821&mid=7876BF64-EFE0-E811-A088-005056A62382"
