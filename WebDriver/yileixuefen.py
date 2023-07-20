@@ -20,22 +20,6 @@ now_url = "https://cme23.91huayi.com/pages/course.aspx?cid=6a4543e4-cd7d-4c25-87
 # db = pymysql.connect(host='localhost', user='root', password='qwer', port=3306, db="jijiao")
 # chromedriver地址
 chromedriver_url = "C:/Users/Administrator/AppData/Local/Google/Chrome/Application/chromedriver"
-# user_name = "240572AMR"
-# user_name = "240572AAI"
-# user_name = "240572ALD"
-# user_pwd = "wcd123456"
-# 朱乐军
-# user_name = "240572AJ9"
-# user_name = "24057PAAV" #胡小凤
-# user_name = "240572AGB"
-# user_name = "240572ADW"
-# user_pwd = "yxj123456"
-# 定义选项字典，默认null
-# user_name="240572AHQ"#黄曙光
-# user_name = "240571AJ4" #朱玲莉
-# user_pwd = "000000"
-# user_name = "240572AJ7"#刘辉
-# user_pwd = "lh123456"
 user_name = Properties.username
 user_pwd =  Properties.user_pwd
 quesrtion_dir = {}

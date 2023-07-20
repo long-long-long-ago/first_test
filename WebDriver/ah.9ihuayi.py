@@ -57,8 +57,10 @@ def switchToCoursePage(driver,class_url):
     print(len(content_box))
     courses = []
     for content in content_box:
-        course = content.find_element(By.TAG_NAME,"a")
-        courses.append(course.get_attribute("href"))
+        is_not_play_over = "学习完毕" != content.find_element(By.TAG_NAME, "span").text
+        if is_not_play_over:
+            course = content.find_element(By.TAG_NAME,"a")
+            courses.append(course.get_attribute("href"))
     for course in courses:
         print("开始学习："+ course)
         swithPalyCoursePage(driver, course)
@@ -163,6 +165,7 @@ def swithPalyCoursePage(driver, course_href):
     driver.switch_to.window(driver.window_handles[0])
     time.sleep(5)
     beisuJS1(driver)
+    playVideo(driver)
     # lis = driver.find_element(By.CLASS_NAME,"list_kc2").find_elements(By.CLASS_NAME,"li")
     # ccH5TogglePause = driver.find_element(By.CLASS_NAME,"ccH5TogglePlay")
     # ccH5TogglePause.click()
@@ -213,10 +216,10 @@ def startwebdriver():
     # 进入课程列表页面
     # 播放第一个视频
     switchToCoursePage(driver,class_1_url)
-    # switchToCoursePage(driver, class_2_url)
-    # switchToCoursePage(driver, class_3_url)
+    switchToCoursePage(driver, class_2_url)
+    switchToCoursePage(driver, class_3_url)
     # 播放第四个视频
-    # switchToCoursePage(driver, class_4_url)
+    switchToCoursePage(driver, class_4_url)
     # ----------------------------------
     time.sleep(30)
     print("程序关闭")
@@ -236,8 +239,9 @@ def playVideo(driver):
     js = " let video = document.querySelector('video');" \
          "video.play()"
     driver.execute_script(js)
-    pass
 
+
+# let video = document.querySelector('video');  video.play()
 def beisuJS1(driver):
     js = "course_ware_finish()"
     driver.execute_script(js)
