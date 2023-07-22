@@ -1,6 +1,6 @@
 
 # 王虎
-user_name = "240572AMR"
+# user_name = "240572AMR"
 # 韩秋玲
 # user_name = "240572AAI"
 # user_pwd = "000000"
@@ -18,5 +18,6 @@ user_name = "240572AMR"
 # user_name = "240572ALV"#叶书洋
 # user_name = "240572AJ7"#刘辉
 # user_pwd = "lh123456"
-# user_name = "240571AJ4"  # 王荣
+user_name = "240571AJ4"  # 王荣
+# user_name = "240572AN0"#贺明文
 user_pwd = "000000"

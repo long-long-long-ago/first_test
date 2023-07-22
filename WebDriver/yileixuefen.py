@@ -20,7 +20,7 @@ now_url = "https://cme23.91huayi.com/pages/course.aspx?cid=6a4543e4-cd7d-4c25-87
 # db = pymysql.connect(host='localhost', user='root', password='qwer', port=3306, db="jijiao")
 # chromedriver地址
 chromedriver_url = "C:/Users/Administrator/AppData/Local/Google/Chrome/Application/chromedriver"
-user_name = Properties.username
+user_name = Properties.user_name
 user_pwd =  Properties.user_pwd
 quesrtion_dir = {}
 
@@ -63,7 +63,7 @@ def startwebdriver():
     # 进入课程列表页面
     switchToCoursePage(driver)
     # ----------------------------------
-    time.sleep(3000)
+    time.sleep(10)
     print("程序关闭")
     driver.close()
 
@@ -306,7 +306,7 @@ def readQues():
         return quesrtion_dir
 
 
-if __name__ == '__main__':
+def run():
     # 获取题目答案
     quesrtion_dir = readQues()
     startwebdriver()

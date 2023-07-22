@@ -113,14 +113,14 @@ def swithExamCoursePage(driver):
             # 选择答案  E
             answers[4].find_element(By.TAG_NAME,"input").click()
         else:
+            quesrtion_dir[quesrtion_text] = 1
             answers[0].find_element(By.TAG_NAME,"input").click()
     #
     submit = driver.find_element(By.CLASS_NAME,"but2_a")
-    time.sleep(5)
+    time.sleep(2)
     submit.click()
     swithChangeAnser(driver)
-
-    time.sleep(10)
+    time.sleep(3)
 
 
 def swithChangeAnser(driver):
@@ -257,7 +257,7 @@ def shibieyanzhengma():
     print(yzm)
     return yzm
 
-if __name__ == '__main__':
+def run():
     # 获取题目答案
     quesrtion_dir = readQues()
     startwebdriver()
