@@ -19,7 +19,7 @@ now_url = "https://cme23.91huayi.com/pages/course.aspx?cid=6a4543e4-cd7d-4c25-87
 # 数据库工具
 # db = pymysql.connect(host='localhost', user='root', password='qwer', port=3306, db="jijiao")
 # chromedriver地址
-chromedriver_url = "C:/Users/Administrator/AppData/Local/Google/Chrome/Application/chromedriver"
+chromedriver_url = "../msedgedriver"
 user_name = Properties.user_name
 user_pwd =  Properties.user_pwd
 quesrtion_dir = {}
@@ -32,7 +32,8 @@ def runJs(driver):
 
 
 def startwebdriver():
-    options = webdriver.ChromeOptions()
+    # options = webdriver.ChromeOptions()
+    options = webdriver.EdgeOptions()
     # 这个是绝对路径
     driver = webdriver.Chrome(executable_path=chromedriver_url, options=options)
     driver.get(now_url)

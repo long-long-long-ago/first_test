@@ -20,7 +20,7 @@ class_1_url = "https://ah.91huayi.com/train/courseware/list?cid=E3352E80-B575-4E
 class_2_url = "https://ah.91huayi.com/train/courseware/list?cid=9B604FD7-3841-4584-989F-568E5D972C84&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_3_url = "https://ah.91huayi.com/train/courseware/list?cid=8DC68B06-2DB7-4262-AABB-C96A40633D40C&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_4_url = "https://ah.91huayi.com/train/courseware/list?cid=AA19A88E-CE8B-4D88-AC5C-7CD07D7D72E5&mid=7876BF64-EFE0-E811-A088-005056A62382"
-chromedriver_url = "../chromedriver"
+chromedriver_url = "../msedgedriver"
 
 # 定义选项字典，默认null
 quesrtion_dir = {}
@@ -185,7 +185,8 @@ def swithPalyCoursePage(driver, course_href):
 
 
 def startwebdriver():
-    options = webdriver.ChromeOptions()
+    # options = webdriver.ChromeOptions()
+    options = webdriver.EdgeOptions()
     # 这个是绝对路径
     driver = webdriver.Chrome(executable_path=chromedriver_url, options=options)
     driver.get(now_url)
