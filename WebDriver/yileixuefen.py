@@ -10,7 +10,7 @@ import re
 from io import BytesIO
 from PIL import Image
 
-from WebDriver import Properties
+from WebDriver import Properties, FileUtils
 from WebDriver.Course import Course
 import json
 
@@ -212,15 +212,11 @@ def swithChangeAnser(driver):
         print(e)
         print("恭喜你，考试通过！")
         # 保存答案
-        saveAnswer(quesrtion_dir)
+        FileUtils.saveAnswer_w(quesrtion_dir)
         print(str(quesrtion_dir))
         pass
 
 
-def saveAnswer(quesrtion_dir):
-    with open('ques.json', 'w', encoding='utf-8') as file:
-        file.write(json.dumps(quesrtion_dir, indent=2))
-    pass
 
 
 def runJs1(driver):

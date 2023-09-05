@@ -18,6 +18,7 @@
 # user_name = "240572ALV"#叶书洋
 # user_name = "240572AJ7"#刘辉
 # user_pwd = "lh123456"
-user_name = "240571AJ4"  # 王荣
+# user_name = "240571AJ4"  # 王荣
 # user_name = "240572AN0"#贺明文
+user_name ="240572AIG"
 user_pwd = "000000"
