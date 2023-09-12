@@ -22,7 +22,7 @@ now_url = "https://cme23.91huayi.com/pages/course.aspx?cid=6a4543e4-cd7d-4c25-87
 chromedriver_url = "../msedgedriver"
 user_name = Properties.user_name
 user_pwd =  Properties.user_pwd
-quesrtion_dir = {}
+
 
 
 def runJs(driver):
@@ -302,8 +302,8 @@ def readQues():
         print(type(quesrtion_dir))
         return quesrtion_dir
 
-
+quesrtion_dir = readQues()
 def run():
     # 获取题目答案
-    quesrtion_dir = readQues()
+    # quesrtion_dir = readQues()
     startwebdriver()

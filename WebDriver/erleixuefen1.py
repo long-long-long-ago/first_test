@@ -22,8 +22,7 @@ class_3_url = "https://ah.91huayi.com/train/courseware/list?cid=8DC68B06-2DB7-42
 class_4_url = "https://ah.91huayi.com/train/courseware/list?cid=AA19A88E-CE8B-4D88-AC5C-7CD07D7D72E5&mid=7876BF64-EFE0-E811-A088-005056A62382"
 chromedriver_url = "../msedgedriver"
 
-# 定义选项字典，默认null
-quesrtion_dir = {}
+
 # 保存验证码
 def saveYzm(driver):
     js = "let c = document.createElement('canvas');let ctx = c.getContext('2d');" \
@@ -258,7 +257,8 @@ def shibieyanzhengma():
     print(yzm)
     return yzm
 
+
+# 获取题目答案
+quesrtion_dir =readQues()
 def run():
-    # 获取题目答案
-    quesrtion_dir = readQues()
     startwebdriver()
