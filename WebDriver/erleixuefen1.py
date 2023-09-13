@@ -1,10 +1,9 @@
 import time
 import re
 import traceback
-from io import BytesIO
-from PIL import Image
 
-from WebDriver import Properties
+
+from WebDriver import Properties, Utils
 from selenium import webdriver
 
 from selenium.webdriver.common.by import By
@@ -13,14 +12,11 @@ import pymysql
 import base64
 import json
 
-now_url= "https://ah.91huayi.com"
-
-
 class_1_url = "https://ah.91huayi.com/train/courseware/list?cid=E3352E80-B575-4E64-8B67-2468A3221821&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_2_url = "https://ah.91huayi.com/train/courseware/list?cid=9B604FD7-3841-4584-989F-568E5D972C84&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_3_url = "https://ah.91huayi.com/train/courseware/list?cid=8DC68B06-2DB7-4262-AABB-C96A40633D40C&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_4_url = "https://ah.91huayi.com/train/courseware/list?cid=AA19A88E-CE8B-4D88-AC5C-7CD07D7D72E5&mid=7876BF64-EFE0-E811-A088-005056A62382"
-chromedriver_url = "../msedgedriver"
+
 
 
 # 保存验证码
@@ -33,19 +29,11 @@ def saveYzm(driver):
 
     base64_str = driver.execute_script(js)
     print(base64_str)
-    img = base64_to_image(base64_str)
+    img = Utils.base64_to_image(base64_str)
     img.save('xx.png')
 
 
-def base64_to_image(base64_str):
-    base64_data = re.sub('^data:image/.+;base64,', '', base64_str)
-    byte_data = base64.b64decode(base64_data)
-    image_data = BytesIO(byte_data)
-    try:
-        img = Image.open(image_data)
-    except :
-        print("-----")
-    return img
+
 
 
 def switchToCoursePage(driver,class_url):
@@ -65,13 +53,6 @@ def switchToCoursePage(driver,class_url):
         swithPalyCoursePage(driver, course)
     # swithPalyCoursePage(driver, courses[4])
 
-def readQues():
-    with open('ques.json', 'r' ,encoding='utf-8') as file:
-        quesStr = file.read()
-        quesrtion_dir = json.loads(quesStr)
-        print(quesrtion_dir)
-        print(type(quesrtion_dir))
-        return quesrtion_dir
 
 
 def swithExamCoursePage(driver):
@@ -187,8 +168,8 @@ def startwebdriver():
     # options = webdriver.ChromeOptions()
     options = webdriver.EdgeOptions()
     # 这个是绝对路径
-    driver = webdriver.Chrome(executable_path=chromedriver_url, options=options)
-    driver.get(now_url)
+    driver = webdriver.Chrome(executable_path=Utils.chromedriver_url, options=options)
+    driver.get(Utils.now_url)
     # 最大化浏览器
     driver.maximize_window()
     loginNameElement = driver.find_element(By.NAME, "user_name")
@@ -203,7 +184,7 @@ def startwebdriver():
     saveYzm(driver)
     # 写入验证码
     yzmTextElement = driver.find_element(By.NAME, "code")
-    yzmText = shibieyanzhengma()
+    yzmText = Utils.shibieyanzhengma()
     yzmTextElement.send_keys(yzmText)
     # 同意隐私
     agreeElement = driver.find_element(By.ID, "ckAgreement")
@@ -248,17 +229,10 @@ def beisuJS1(driver):
 
 
 
-#识别数字验证码
-def shibieyanzhengma():
-    ocr = ddddocr.DdddOcr()
-    with open('../WebDriver/xx.png', 'rb') as f:
-        img_bytes = f.read()
-    yzm = ocr.classification(img_bytes)
-    print(yzm)
-    return yzm
+
 
 
 # 获取题目答案
-quesrtion_dir =readQues()
+quesrtion_dir =Utils.readQues()
 def run():
     startwebdriver()
