@@ -2,21 +2,16 @@ import time
 import re
 import traceback
 
-
 from WebDriver import Properties, Utils
 from selenium import webdriver
 
 from selenium.webdriver.common.by import By
-import ddddocr
-import pymysql
-import base64
 import json
 
-class_1_url = "https://ah.91huayi.com/train/courseware/list?cid=E3352E80-B575-4E64-8B67-2468A3221821&mid=7876BF64-EFE0-E811-A088-005056A62382"
+class_1_url = "https://ah.91huayi.com/train/courseware/list?cid=25c67c71-f70c-4181-a0e6-f5e0968ea201&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_2_url = "https://ah.91huayi.com/train/courseware/list?cid=9B604FD7-3841-4584-989F-568E5D972C84&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_3_url = "https://ah.91huayi.com/train/courseware/list?cid=8DC68B06-2DB7-4262-AABB-C96A40633D40C&mid=7876BF64-EFE0-E811-A088-005056A62382"
 class_4_url = "https://ah.91huayi.com/train/courseware/list?cid=AA19A88E-CE8B-4D88-AC5C-7CD07D7D72E5&mid=7876BF64-EFE0-E811-A088-005056A62382"
-
 
 
 # 保存验证码
@@ -33,26 +28,22 @@ def saveYzm(driver):
     img.save('xx.png')
 
 
-
-
-
-def switchToCoursePage(driver,class_url):
+def switchToCoursePage(driver, class_url):
     # 跳转到播放页面
     driver.get(class_url)
     time.sleep(5)
-    content_box = driver.find_elements(By.XPATH,"//*[@id='listBox']/ div / ul / li")
+    content_box = driver.find_elements(By.XPATH, "//*[@id='listBox']/ div / ul / li")
     print(len(content_box))
     courses = []
     for content in content_box:
         is_not_play_over = "学习完毕" != content.find_element(By.TAG_NAME, "span").text
         if is_not_play_over:
-            course = content.find_element(By.TAG_NAME,"a")
+            course = content.find_element(By.TAG_NAME, "a")
             courses.append(course.get_attribute("href"))
     for course in courses:
-        print("开始学习："+ course)
+        print("开始学习：" + course)
         swithPalyCoursePage(driver, course)
     # swithPalyCoursePage(driver, courses[4])
-
 
 
 def swithExamCoursePage(driver):
@@ -60,43 +51,43 @@ def swithExamCoursePage(driver):
     driver.switch_to.window(driver.current_window_handle)
 
     # 共5道题，以此便利
-    kaoshi_box = driver.find_element(By.CLASS_NAME,"kaoshi_box")
-    shitis = kaoshi_box.find_elements(By.CLASS_NAME,"shiti")
+    kaoshi_box = driver.find_element(By.CLASS_NAME, "kaoshi_box")
+    shitis = kaoshi_box.find_elements(By.CLASS_NAME, "shiti")
     for shiti in shitis:
         time.sleep(1)
         # 获取问题内容
-        quesrtion_text = shiti.find_element(By.TAG_NAME,"p").text[2:].replace(" ", "").replace("<","")
+        quesrtion_text = shiti.find_element(By.TAG_NAME, "p").text[2:].replace(" ", "").replace("<", "")
         # daan = quesrtion_dirs.get(quesrtion_text)
         print(quesrtion_text)
-        if quesrtion_dir.get(quesrtion_text) is None :
+        if quesrtion_dir.get(quesrtion_text) is None:
             # 若此道题未写入答案，默认设置A
             quesrtion_dir[quesrtion_text] = 1
         # 答案
         print(quesrtion_dir.get(quesrtion_text))
         # 获取到所有的选项
-        answers = shiti.find_elements(By.TAG_NAME,"li")
+        answers = shiti.find_elements(By.TAG_NAME, "li")
         for answer in answers:
-            print(answer.find_element(By.TAG_NAME,"span").text)
-        if quesrtion_dir.get(quesrtion_text) == 1 :
+            print(answer.find_element(By.TAG_NAME, "span").text)
+        if quesrtion_dir.get(quesrtion_text) == 1:
             # 选择答案  A
-            answers[0].find_element(By.TAG_NAME,"input").click()
+            answers[0].find_element(By.TAG_NAME, "input").click()
         elif quesrtion_dir.get(quesrtion_text) == 2:
             # 选择答案  B
-            answers[1].find_element(By.TAG_NAME,"input").click()
+            answers[1].find_element(By.TAG_NAME, "input").click()
         elif quesrtion_dir.get(quesrtion_text) == 3:
             # 选择答案  C
-            answers[2].find_element(By.TAG_NAME,"input").click()
+            answers[2].find_element(By.TAG_NAME, "input").click()
         elif quesrtion_dir.get(quesrtion_text) == 4:
             # 选择答案  D
-            answers[3].find_element(By.TAG_NAME,"input").click()
-        elif quesrtion_dir.get(quesrtion_text) == 5 :
+            answers[3].find_element(By.TAG_NAME, "input").click()
+        elif quesrtion_dir.get(quesrtion_text) == 5:
             # 选择答案  E
-            answers[4].find_element(By.TAG_NAME,"input").click()
+            answers[4].find_element(By.TAG_NAME, "input").click()
         else:
             quesrtion_dir[quesrtion_text] = 1
-            answers[0].find_element(By.TAG_NAME,"input").click()
+            answers[0].find_element(By.TAG_NAME, "input").click()
     #
-    submit = driver.find_element(By.CLASS_NAME,"but2_a")
+    submit = driver.find_element(By.CLASS_NAME, "but2_a")
     time.sleep(2)
     submit.click()
     swithChangeAnser(driver)
@@ -108,22 +99,30 @@ def swithChangeAnser(driver):
         time.sleep(5)
         driver.switch_to.window(driver.current_window_handle)
         # 获取错误题
-        left = driver.find_element(By.CLASS_NAME,"kj_f_box")
-        dds = left.find_elements(By.XPATH,".//ul/li")
+        left = driver.find_element(By.CLASS_NAME, "kj_f_box")
+        dds = left.find_elements(By.XPATH, ".//ul/li")
         print("============错误题===========")
         for dd in dds:
-            print(str(dd.text[2:]).replace(" ", "").replace("&lt;",""))
-            quesrtion_dir[dd.text[2:].replace(" ", "").replace("&lt;","")] = quesrtion_dir.get(dd.text[2:].replace(" ", "").replace("&lt;",""))+1
+            print(str(dd.text[2:]).replace(" ", "").replace("&lt;", ""))
+            print("===========1===========")
+            print(dd.text[2:].replace(" ", "").replace("&lt;", ""))
+            print("===========2===========")
+            print(quesrtion_dir[dd.text[2:].replace(" ", "").replace("&lt;", "")])
+            print("===========3===========")
+            print(quesrtion_dir.get(dd.text[2:].replace(" ", "").replace("&lt;", "")))
+            print("===========4===========")
+            quesrtion_dir[dd.text[2:].replace(" ", "").replace("&lt;", "")] = quesrtion_dir.get(
+                dd.text[2:].replace(" ", "").replace("&lt;", "")) + 1
         # 重新考试
         time.sleep(10)
         print("==========================")
-        exam_angin_box = driver.find_element(By.CLASS_NAME,"but3")
-        exam_angin = exam_angin_box.find_elements(By.TAG_NAME,"button")[1]
+        exam_angin_box = driver.find_element(By.CLASS_NAME, "but3")
+        exam_angin = exam_angin_box.find_elements(By.TAG_NAME, "button")[1]
         exam_angin.click()
         swithExamCoursePage(driver)
     except Exception as e:
         print(e)
-        print('\n','>>>'*20)
+        print('\n', '>>>' * 20)
         print(traceback.print_exc())
         print("恭喜你，考试通过！")
         print("=========正确答案=============")
@@ -133,11 +132,11 @@ def swithChangeAnser(driver):
         print("============================")
         pass
 
+
 def saveAnswer(quesrtion_dir):
     with open('ques.json', 'w', encoding='utf-8') as file:
         file.write(json.dumps(quesrtion_dir, ensure_ascii=False, indent=2))
     pass
-
 
 
 def swithPalyCoursePage(driver, course_href):
@@ -178,7 +177,7 @@ def startwebdriver():
     loginPwdElement.send_keys(Properties.user_pwd)
     # 识别验证码
     yzmImgElement = driver.find_element(By.NAME, "codeimg")
-    src= yzmImgElement.get_attribute("src")
+    src = yzmImgElement.get_attribute("src")
     print(src)
     time.sleep(1)
     saveYzm(driver)
@@ -196,7 +195,7 @@ def startwebdriver():
     # ----------------------------------
     # 进入课程列表页面
     # 播放第一个视频
-    switchToCoursePage(driver,class_1_url)
+    switchToCoursePage(driver, class_1_url)
     switchToCoursePage(driver, class_2_url)
     switchToCoursePage(driver, class_3_url)
     # 播放第四个视频
@@ -211,10 +210,11 @@ def startwebdriver():
 def beisuJS(driver):
     js = " let video = document.querySelector('video');" \
          "function play() {" \
-         "video.playbackRate = 5;}"\
+         "video.playbackRate = 5;}" \
          "    setInterval(play, 100);"
     base64_str = driver.execute_script(js)
     pass
+
 
 def playVideo(driver):
     js = " let video = document.querySelector('video');" \
@@ -228,11 +228,9 @@ def beisuJS1(driver):
     driver.execute_script(js)
 
 
-
-
-
-
 # 获取题目答案
-quesrtion_dir =Utils.readQues()
+quesrtion_dir = Utils.readQues()
+
+
 def run():
     startwebdriver()
